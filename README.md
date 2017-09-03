@@ -3,7 +3,7 @@
 ## Samples
 | Sample | Description |
 | ------------- | ------------- |
-|Realm-Example| It is a simple CRUD example using realm |
+| [Realm-Example](https://github.com/We-con/Kotlin-AndroidAdvanced/tree/01_Realm)| It is a simple CRUD example using realm |
 
 ## 01 Realm Example
 
