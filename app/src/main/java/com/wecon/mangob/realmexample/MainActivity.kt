@@ -2,19 +2,21 @@ package com.wecon.mangob.realmexample
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
-import android.widget.Toast
 import com.wecon.mangob.realmexample.model.Person
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
 
     private var realm: Realm by Delegates.notNull()
     private var isFabOpen = false
+    private lateinit var fabs: ArrayList<FloatingActionButton>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +31,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         showStatus("Perform basic Create/Read/Update/Delete (CRUD) operations...")
-        create()
-        read()
-        update(30)
-        read()
-        delete(30)
-        read()
     }
 
     override fun onDestroy() {
@@ -43,17 +39,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setFabActions() {
-        fab.setOnClickListener {
-            animateFab()
+        fabs = ArrayList<FloatingActionButton>().apply {
+            add(fab_action_c)
+            add(fab_action_r)
+            add(fab_action_u)
+            add(fab_action_d)
         }
-        fab_action_c.setOnClickListener(fabListener("action create"))
-        fab_action_r.setOnClickListener(fabListener("action read"))
-        fab_action_u.setOnClickListener(fabListener("action update"))
-        fab_action_d.setOnClickListener(fabListener("action delete"))
+        fab.setOnClickListener(fabListener(-1))
+        for((index, fab) in fabs.withIndex()) fab.setOnClickListener(fabListener(index))
     }
 
-    private fun fabListener(msg: String) = View.OnClickListener {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    private fun fabListener(type: Int) = View.OnClickListener {
+        when(type) {
+            0 -> create()
+            1 -> read()
+            2 -> update()
+            3 -> delete()
+            else -> null
+        }
         animateFab()
     }
 
@@ -71,15 +74,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         AnimationUtils.loadAnimation(applicationContext, R.anim.fab_open)?.let {
-            fab_action_c.startAnimation(it)
-            fab_action_r.startAnimation(it)
-            fab_action_u.startAnimation(it)
-            fab_action_d.startAnimation(it)
+            for(fab in fabs) fab.startAnimation(it)
         }
-        fab_action_c.isClickable = true
-        fab_action_r.isClickable = true
-        fab_action_u.isClickable = true
-        fab_action_d.isClickable = true
+        for(fab in fabs) fab.isClickable = true
     }
 
     private fun closeFab() {
@@ -88,15 +85,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close)?.let {
-            fab_action_c.startAnimation(it)
-            fab_action_r.startAnimation(it)
-            fab_action_u.startAnimation(it)
-            fab_action_d.startAnimation(it)
+            for(fab in fabs) fab.startAnimation(it)
         }
-        fab_action_c.isClickable = false
-        fab_action_r.isClickable = false
-        fab_action_u.isClickable = false
-        fab_action_d.isClickable = false
+        for(fab in fabs) fab.isClickable = false
     }
 
 
@@ -105,43 +96,45 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun create() {
+        showStatus(">>Create operation")
         realm.executeTransaction {
-            realm.createObject(Person::class.java, 0).apply {
+            realm.createObject(Person::class.java, UUID.randomUUID().toString())?.apply {
                 name = "Young Person"
                 age = 14
-                showStatus("Create operation >> ${name} : ${age}")
-            }
+                showStatus("${name} : ${age}")
+            } ?: showStatus("Can't create person")
         }
-
     }
 
     private fun read() {
-        realm.where(Person::class.java).findFirst()?.apply{
-            showStatus("read operation >> ${name} : ${age}")
-        }
+        showStatus(">>Read operation")
+        realm.where(Person::class.java).findAll()?.let {
+            when(it.size) {
+                0 -> showStatus("There is no items")
+                else -> for(person in it) showStatus("${person.name} : ${person.age}")
+            }
+        } ?: showStatus("Can't read person")
     }
 
-    private fun update(p0: Int) {
+    private fun update() {
+        showStatus(">>Update operation")
         realm.executeTransaction {
-            realm.where(Person::class.java).findFirst().apply{
+            realm.where(Person::class.java).equalTo("name", "Young Person").findFirst()?.apply{
                 name = "Old Person"
-                age = p0
-                showStatus("Update operation >> ${name} : ${age}")
-            }
+                age = 60
+                showStatus("${name} : ${age}")
+            } ?: showStatus("Can't update Young Person")
         }
     }
 
-    private fun delete(p0: Int) {
+    private fun delete() {
+        showStatus(">>Delete operation")
         realm.executeTransaction {
-            realm.where(Person::class.java).findFirst().apply {
+            realm.where(Person::class.java).equalTo("name", "Old Person").findFirst()?.apply {
                 deleteFromRealm()
-                showStatus("Delete operation >> ")
-            }
+                showStatus("delete success")
+            } ?: showStatus("Can't delete Old Person")
         }
-    }
-
-    private fun showAll() {
-        realm.where(Person::class.java)
     }
 
 }
