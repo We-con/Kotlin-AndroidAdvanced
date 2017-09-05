@@ -14,7 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-    var customService: CustomService = CustomService.retrofit.create(CustomService::class.java)
+//    var customService: CustomService = CustomService.retrofit.create(CustomService::class.java)
 
     var postAdapter: PostAdapter = PostAdapter(this, false, Post())
 
@@ -37,21 +37,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         create_post_btn.setOnClickListener {
-            writePost()
-//            startActivity(Intent(this, CrtPostActivity::class.java))
-        }
 
+            startActivity(Intent(this, CrtPostActivity::class.java))
+        }
 
     }
 
     fun getPosts() {
-        var call: Call<List<Post>> = customService.getPosts()
+        var call: Call<List<Post>> = BaseApplication.customService.getPosts()
         call.enqueue(object: Callback<List<Post>>{
             override fun onResponse(call: Call<List<Post>>?, response: Response<List<Post>>?) {
                 var list = response!!.body() as ArrayList<Post>
                 postAdapter.setData(list)
-                postAdapter.notifyDataSetChanged()
-                Toast.makeText(applicationContext, list.toString(), Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(call: Call<List<Post>>?, t: Throwable?) {
@@ -60,17 +57,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun writePost(){
-        var call:Call<Post> = customService.writePost(Post())
-
-        call.enqueue(object: Callback<Post> {
-            override fun onResponse(call: Call<Post>?, response: Response<Post>?) {
-                Log.d("MIM", "onResponse")
-            }
-
-            override fun onFailure(call: Call<Post>?, t: Throwable?) {
-                Log.d("MIM", "onFailure")
-            }
-        })
+    override fun onResume() {
+        super.onResume()
+        getPosts()
     }
 }

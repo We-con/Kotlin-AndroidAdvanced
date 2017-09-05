@@ -4,6 +4,7 @@ import com.example.lf_wannabe.retrofitexample.model.Post
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
@@ -22,5 +23,5 @@ interface CustomService {
     fun getPosts(): Call<List<Post>>
 
     @POST("/write")
-    fun writePost(post: Post): Call<Post>
+    fun writePost(@Body post: Post): Call<Post>
 }
