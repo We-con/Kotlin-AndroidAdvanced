@@ -6,33 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.lf_wannabe.retrofitexample.MainActivity">
 
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="request"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.464"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:text="create"
-        android:id="@+id/create_post_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn"
-        app:layout_constraintTop_toBottomOf="@+id/list"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="0dp"
@@ -41,7 +14,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,5 +22,56 @@
         app:layout_constraintVertical_bias="0.0">
 
     </android.support.v7.widget.RecyclerView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_action_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="0dp"
+        android:clickable="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/fab_action_r"
+        app:layout_constraintEnd_toEndOf="@+id/fab_action_r"
+        app:layout_constraintStart_toStartOf="@+id/fab_action_r"
+        app:srcCompat="@drawable/ic_action_char_c" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_action_r"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="0dp"
+        android:clickable="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/fab_action_d"
+        app:layout_constraintEnd_toEndOf="@+id/fab_action_d"
+        app:layout_constraintStart_toStartOf="@+id/fab_action_d"
+        app:srcCompat="@drawable/ic_action_char_r" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_action_d"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:clickable="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/fab"
+        app:layout_constraintEnd_toEndOf="@+id/fab"
+        app:layout_constraintStart_toStartOf="@+id/fab"
+        app:srcCompat="@drawable/ic_action_char_d" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_action_fab" />
 
 </android.support.constraint.ConstraintLayout>

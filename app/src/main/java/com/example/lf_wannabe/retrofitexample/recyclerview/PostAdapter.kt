@@ -18,5 +18,12 @@ class PostAdapter(ac: FragmentActivity, hasHeader: Boolean, post:Post)
 
     override fun onBindViewHolder(holder: PostHolder?, position: Int) {
         holder!!.onBind(getItem(position))
+
+        holder.itemView.setOnClickListener {
+            view ->
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(view, getItem(position).id)
+            }
+        }
     }
 }

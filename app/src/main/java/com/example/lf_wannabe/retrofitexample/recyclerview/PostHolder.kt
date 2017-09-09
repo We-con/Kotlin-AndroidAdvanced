@@ -12,7 +12,7 @@ class PostHolder(itemView: View) : BaseViewHolder<Post, Post>(itemView) {
     override fun onBind(item: Post?) {
         var content = ""
         with(item!!){
-            content = "제목 : ${title} \n저자 : ${author} \n생성일시 : ${created_at}"
+            content = "KEY: ${id}\n제목 : ${title} \n저자 : ${author} \n생성일시 : ${created_at}"
         }
         itemView.post_id.text = content
     }
